@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Law Records Management System</title>
+    <style>
+        :root {
+            --primary-color: #4B0082;
+            --secondary-color: #6A0DAD;
+            --accent-color: #9370DB;
+            --light-color: #E6E6FA;
+            --dark-text: #333;
+            --light-text: #FFF;
+            --shadow: 0 8px 20px rgba(75, 0, 130, 0.15);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark-text);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--light-text);
+            padding: 20px 50px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .header-content {
+            text-align: center;
+        }
+        
+        .header-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .logo {
+            margin-right: 15px;
+            font-size: 42px;
+            color: var(--light-text);
+        }
+        
+        .signup-container {
+            background: var(--light-text);
+            width: 80%;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .signup-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
+        }
+        
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .signup-form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .form-section {
+            width: 100%;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+        }
+        
+        .form-group {
+            width: 48%;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-group.full {
+            width: 100%;
+        }
+        
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            transition: all 0.3s;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            transition: all 0.3s;
+            background-color: #f9f9f9;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.2);
+            background-color: #fff;
+        }
+        
+        .form-group input:focus + .input-icon {
+            color: var(--accent-color);
+        }
+        
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 40px;
+            color: #aaa;
+            transition: all 0.3s;
+        }
+        
+        .role-selection {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            gap: 20px;
+        }
+        
+        .role-btn {
+            flex: 1;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 2px solid var(--primary-color);
+            background-color: white;
+            color: var(--primary-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .role-btn i {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .role-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(75, 0, 130, 0.1);
+        }
+        
+        .role-btn.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .accept-container {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
+            gap: 10px;
+            background-color: var(--light-color);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        #accept {
+            transform: scale(1.4);
+            accent-color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .terms-text {
+            font-size: 15px;
+            color: var(--dark-text);
+        }
+        
+        .terms-text a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .submit-container {
+            text-align: center;
+            margin-top: 30px;
+            width: 100%;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            cursor: not-allowed;
+            opacity: 0.5;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(75, 0, 130, 0.2);
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s;
+        }
+        
+        .submit-btn.active {
+            cursor: pointer;
+            opacity: 1;
+        }
+        
+        .submit-btn.active:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(75, 0, 130, 0.3);
+        }
+        
+        .submit-btn.active:hover::before {
+            left: 100%;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .signup-container {
+                width: 95%;
+                padding: 30px 20px;
+            }
+            
+            .form-group {
+                width: 100%;
+            }
+            
+            .role-selection {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .role-btn {
+                width: 100%;
+            }
+            
+            .header-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content animate__animated animate__fadeIn">
+            <div class="header-title"><i class="fas fa-balance-scale logo"></i> Law Records Management System</div>
+            <div class="header-subtitle">Streamlined legal documentation at your fingertips</div>
+        </div>
+    </header>
+
+    <div class="signup-container animate__animated animate__fadeInUp">
+        <h2 class="form-title">Create Your Account</h2>
+        <form class="signup-form">
+            <!-- Personal Information Section -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-user-circle"></i> Personal Information</h3>
+                <div class="form-group">
+                    <label for="fname">First Name</label>
+                    <input type="text" id="fname" required>
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+                <div class="form-group">
+                    <label for="lname">Last Name</label>
+                    <input type="text" id="lname" required>
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+                <div class="form-group full">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required>
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+            </div>
+            
+            <!-- Account Information Section -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-lock"></i> Account Information</h3>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                    <i class="fas fa-at input-icon"></i>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                    <i class="fas fa-key input-icon"></i>
+                </div>
+            </div>
+            
+            <!-- Contact Information Section -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-phone-alt"></i> Contact Information</h3>
+                <div class="form-group">
+                    <label for="country_code">Country Code</label>
+                    <input type="text" id="country_code" placeholder="+1">
+                    <i class="fas fa-globe input-icon"></i>
+                </div>
+                <div class="form-group">
+                    <label for="phone_no">Phone Number</label>
+                    <input type="text" id="phone_no">
+                    <i class="fas fa-mobile-alt input-icon"></i>
+                </div>
+            </div>
+            
+            <!-- Address Information Section -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-map-marker-alt"></i> Address Information</h3>
+                <div class="form-group">
+                    <label for="street_no">Street No</label>
+                    <input type="text" id="street_no">
+                    <i class="fas fa-road input-icon"></i>
+                </div>
+                <div class="form-group">
+                    <label for="street_name">Street Name</label>
+                    <input type="text" id="street_name">
+                    <i class="fas fa-map-signs input-icon"></i>
+                </div>
+                <div class="form-group">
+                    <label for="building_name">Building Name</label>
+                    <input type="text" id="building_name">
+                    <i class="fas fa-building input-icon"></i>
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city">
+                    <i class="fas fa-city input-icon"></i>
+                </div>
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <input type="text" id="state">
+                    <i class="fas fa-flag input-icon"></i>
+                </div>
+                <div class="form-group">
+                    <label for="pincode">Pincode</label>
+                    <input type="text" id="pincode">
+                    <i class="fas fa-map-pin input-icon"></i>
+                </div>
+            </div>
+
+            <!-- Role Selection Section -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-user-tag"></i> Select Your Role</h3>
+                <div class="role-selection">
+                    <button type="button" class="role-btn" id="lawyer-btn">
+                        <i class="fas fa-gavel"></i>
+                        <span>Lawyer</span>
+                    </button>
+                    <button type="button" class="role-btn" id="client-btn">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Client</span>
+                    </button>
+                    
+                </div>
+            </div>
+
+            <!-- Terms & Conditions -->
+            <div class="accept-container">
+                <input type="checkbox" id="accept">
+                <label for="accept" class="terms-text">I accept all the <a href="#">terms and conditions</a> and <a href="#">privacy policy</a></label>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="submit-container">
+                <button type="submit" class="submit-btn" id="submit-btn" disabled>Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Animate form elements on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const formGroups = document.querySelectorAll('.form-group');
+            formGroups.forEach((group, index) => {
+                setTimeout(() => {
+                    group.classList.add('animate__animated', 'animate__fadeInUp');
+                }, 100 * index);
+            });
+        });
+        
+        // Role selection logic with animation
+let selectedRole = "";
+document.getElementById("lawyer-btn").addEventListener("click", function() {
+    selectedRole = "Lawyer";
+    this.classList.add("active", "animate__animated", "animate__pulse");
+    document.getElementById("client-btn").classList.remove("active", "animate__animated", "animate__pulse");
+});
+
+document.getElementById("client-btn").addEventListener("click", function() {
+    selectedRole = "Client";
+    this.classList.add("active", "animate__animated", "animate__pulse");
+    document.getElementById("lawyer-btn").classList.remove("active", "animate__animated", "animate__pulse");
+});
+
+// Enable submit button when checkbox is checked
+document.getElementById("accept").addEventListener("change", function() {
+    let submitBtn = document.getElementById("submit-btn");
+    if (this.checked) {
+        submitBtn.disabled = false;
+        submitBtn.classList.add("active", "animate__animated", "animate__heartBeat");
+        setTimeout(() => {
+            submitBtn.classList.remove("animate__animated", "animate__heartBeat");
+        }, 1000);
+    } else {
+        submitBtn.disabled = true;
+        submitBtn.classList.remove("active");
+    }
+});
+
+// Handle form submission
+document.querySelector(".signup-form").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    
+    const formData = {
+        Fname: document.getElementById("fname").value,
+        Lname: document.getElementById("lname").value,
+        username: document.getElementById("username").value,
+        password: document.getElementById("password").value,
+        email: document.getElementById("email").value,
+        country_code: document.getElementById("country_code").value,
+        phone_no: document.getElementById("phone_no").value,
+        street_no: document.getElementById("street_no").value,
+        street_name: document.getElementById("street_name").value,
+        building_name: document.getElementById("building_name").value, 
+        city: document.getElementById("city").value, 
+        state: document.getElementById("state").value,
+        pincode: document.getElementById("pincode").value,
+        role: selectedRole
+    };
+
+    // Check if a role is selected
+    if (!formData.role) {
+        alert("Please select a role (Lawyer or Client)");
+        return;
+    }
+
+    const response = await fetch("http://localhost:5000/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+    });
+
+    // Redirect based on selected role
+    const data = await response.json();
+            if (response.ok) {
+                alert("Signup successful!");
+                window.location.href = formData.role === "Lawyer" ? "lawyersignup.html" : "clientsignup.html";
+            } else {
+                alert(data.message);
+            }
+});
+        
+        // Add focus and blur effects for inputs
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.querySelector('label').style.color = '#6A0DAD';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.querySelector('label').style.color = '#4B0082';
+            });
+        });
+    </script>
+
+</body>
+</html>

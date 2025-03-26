@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Signup</title>
+    <style>
+        :root {
+            --primary-color: #4B0082;
+            --secondary-color: #6A0DAD;
+            --accent-color: #9370DB;
+            --light-color: #E6E6FA;
+            --dark-text: #333;
+            --light-text: #FFF;
+            --shadow: 0 8px 20px rgba(75, 0, 130, 0.15);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark-text);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--light-text);
+            padding: 20px 50px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 40px;
+        }
+        
+        .header-content {
+            text-align: center;
+        }
+        
+        .header-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: auto;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            transition: all 0.3s;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            transition: all 0.3s;
+            background-color: #f9f9f9;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.2);
+            background-color: #fff;
+        }
+        
+        input:focus + .input-icon {
+            color: var(--accent-color);
+        }
+        
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 40px;
+            color: #aaa;
+            transition: all 0.3s;
+        }
+        
+        button {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 15px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(75, 0, 130, 0.2);
+            letter-spacing: 1px;
+            width: 100%;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(75, 0, 130, 0.3);
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 30px 20px;
+            }
+            
+            header {
+                padding: 15px;
+            }
+            
+            .header-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-title">Law Records Management System</div>
+            <div class="header-subtitle">Streamlined legal documentation at your fingertips</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>Client Registration</h2>
+        <form id="clientForm">
+            <div class="form-group">
+                <label for="identificationNo">Identification Number</label>
+                <input type="text" id="identificationNo" name="identificationNo" placeholder="Enter your ID number" required>
+                <i class="input-icon">🪪</i>
+            </div>
+            
+            <div class="form-group">
+                <label for="emergencyContact">Emergency Contact</label>
+                <input type="tel" id="emergencyContact" name="emergencyContact" placeholder="Enter emergency contact number" required>
+                <i class="input-icon">📞</i>
+            </div>
+            
+            <button type="submit">Complete Registration</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("clientForm").addEventListener("submit", async function(event) {
+            event.preventDefault(); // Prevent actual form submission
+            const identificationNo = document.getElementById("identificationNo").value;
+            const emergencyContact = document.getElementById("emergencyContact").value;
+    
+            if (!/^AADHR\d{9}$/.test(identificationNo)) {
+                alert("Identification Number must start with 'AADHR' and be followed by 9 digits.");
+                return;
+            }
+            if (!/^\d{10}$/.test(emergencyContact)) {
+                alert("Emergency Contact must be exactly 10 digits.");
+                return;
+            }
+
+            if (identificationNo && emergencyContact) {
+                // You can send data to the server here
+                const response = await fetch("http://localhost:5000/signup/client", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        identification_no: identificationNo,
+                        emergency_contact: emergencyContact
+                    })
+                });
+            
+                const data = await response.json();
+                alert(data.msg);
+                if(responsse.ok){
+                    window.location.href = "client_dashboard.html";
+                }
+            } 
+            else {
+                alert("Please fill out all fields.");
+            }
+});
+        
+        // Add focus and blur effects for inputs
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.querySelector('label').style.color = '#6A0DAD';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.querySelector('label').style.color = '#4B0082';
+            });
+        });
+    </script>
+</body>
+</html>

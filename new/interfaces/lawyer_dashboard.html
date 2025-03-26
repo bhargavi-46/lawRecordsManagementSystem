@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lawyer Dashboard - Law Records Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #EDE7F6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+        .header {
+            width: 100%;
+            background-color: #7214b6;
+            padding: 15px;
+            color: white;
+            text-align: center;
+            font-size: 40px;
+            font-weight: bold;
+            position: relative;
+        }
+        .menu-toggle {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #512DA8;
+            padding: 15px;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            left: -280px;
+            top: 0;
+            padding-top: 80px;
+            transition: left 0.3s ease;
+            z-index: 100;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        }
+        .sidebar.active {
+            left: 0;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px;
+            cursor: pointer;
+            border-bottom: 1px solid white;
+        }
+        .sidebar ul li:hover {
+            background-color: #d7acd7;
+        }
+        .content-area {
+            padding: 20px;
+            flex: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .section {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .hidden {
+            display: none;
+        }
+        .case-box, .update-box {
+            background-color: #F3E5F5;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            border-left: 6px solid #7214b6;
+        }
+        .case-update-form, .case-document-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .case-update-form input, 
+        .case-update-form textarea,
+        .case-document-form input, 
+        .case-document-form select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #512DA8;
+            border-radius: 4px;
+        }
+        .case-update-form button, 
+        .case-document-form button {
+            background-color: #7214b6;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .case-update-form button:hover, 
+        .case-document-form button:hover {
+            background-color: #512DA8;
+        }
+        #updateMessage, #documentMessage {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </div>
+        LAWYER DASHBOARD
+    </div>
+    
+    <div class="container">
+        <nav class="sidebar" id="sidebar">
+            <ul>
+                <li onclick="showSection('home'); toggleSidebar()"><i class="fas fa-home"></i> Home</li>
+                <li onclick="showSection('assigned-cases'); toggleSidebar()"><i class="fas fa-briefcase"></i> Assigned Cases</li>
+                <li onclick="showSection('add-case-update'); toggleSidebar()"><i class="fas fa-edit"></i> Add Case Update</li>
+                <li onclick="showSection('add-case-document'); toggleSidebar()"><i class="fas fa-file-upload"></i> Add Case Document</li>
+                <li onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</li>
+            </ul>
+        </nav>
+        
+        <div class="content-area" id="content">
+            <div id="home" class="section hidden">
+                <h2>Welcome, Lawyer!!!</h2>
+                <p>Stay organised and on top of your legal matters. Here are your latest case updates:</p>
+                <br>
+                <div class="profile-box">
+                    <h3>CASE UPDATES</h3>
+                </div>
+            </div>
+            
+            <div id="assigned-cases" class="section hidden">
+                <h2>Assigned Cases</h2>
+            </div>
+            
+            <div id="add-case-update" class="section hidden">
+                <h2>Add Case Update</h2>
+                <form id="caseUpdateForm" class="case-update-form">
+                    <input type="text" id="caseId" name="caseId" pattern="CA\d{4}" placeholder="Case ID (Format: CA1234)" required>
+                    <input type="date" id="updateDate" name="updateDate" required>
+                    <textarea id="taskDescription" name="taskDescription" placeholder="Describe the case update..." rows="4" required></textarea>
+                    <button type="submit">Submit Case Update</button>
+                </form>
+                <div id="updateMessage"></div>
+            </div>
+            
+            <div id="add-case-document" class="section hidden">
+                <h2>Add Case Document</h2>
+                <form id="caseDocumentForm" class="case-document-form">
+                    <input type="text" id="documentCaseId" name="documentCaseId" pattern="CA\d{4}" placeholder="Case ID (Format: CA1234)" required>
+                    <select id="documentType" name="documentType" required>
+                        <option value="">Select Document Type</option>
+                        <option value="legal">Legal Document</option>
+                        <option value="evidence">Evidence</option>
+                        <option value="discovery">Discovery</option>
+                        <option value="witness-statement">Witness Statement</option>
+                    </select>
+                    <select id="documentStatus" name="documentStatus" required>
+                        <option value="">Select Document Status</option>
+                        <option value="draft">Draft</option>
+                        <option value="final">Final</option>
+                        <option value="revoked">Revoked</option>
+                    </select>
+                    <textarea id="documentDescription" name="documentDescription" placeholder="Describe the document..." rows="3" required></textarea>
+                    <input type="file" id="documentFile" name="documentFile" required>
+                    <button type="submit">Upload Document</button>
+                </form>
+                <div id="documentMessage"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const lawyerId = localStorage.getItem("user_id");  // Get lawyer ID from storage or session
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => section.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+        function logout() {
+            localStorage.removeItem("user_id");
+            window.location.href = "homepage.html";
+        }
+
+        window.onload = function() {
+            showSection('home');
+        };
+        
+        // Case Update Form Handling
+        document.getElementById('caseUpdateForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const caseId = document.getElementById('caseId').value;
+            const updateDate = document.getElementById('updateDate').value;
+            const taskDescription = document.getElementById('taskDescription').value;
+            const messageDiv = document.getElementById('updateMessage');
+
+            const caseIdRegex = /^CA\d{4}$/;
+            if (!caseIdRegex.test(caseId)) {
+                messageDiv.textContent = 'Invalid Case ID. Please use format CA followed by 4 digits.';
+                messageDiv.className = 'error';
+                messageDiv.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/cases/${caseId}/update`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        lawyer_id: lawyerId,
+                        update_date: updateDate,
+                        task_description: taskDescription
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageDiv.textContent = `Update Added Successfully for Case ${caseId}`;
+                    messageDiv.className = 'success';
+                } else {
+                    messageDiv.textContent = data.message || 'Failed to update case';
+                    messageDiv.className = 'error';
+                }
+            } catch (error) {
+                messageDiv.textContent = 'Error updating case. Try again later.';
+                messageDiv.className = 'error';
+            }
+            messageDiv.style.display = 'block';
+        });        
+
+
+        // Case Document Form Handling
+        document.getElementById('caseDocumentForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const caseId = document.getElementById('documentCaseId').value;
+            const documentType = document.getElementById('documentType').value;
+            const documentStatus = document.getElementById('documentStatus').value;
+            const documentFile = document.getElementById('documentFile').files[0];
+            const documentDescription = document.getElementById('documentDescription').value;
+            const messageDiv = document.getElementById('documentMessage');
+
+            const caseIdRegex = /^CA\d{4}$/;
+            if (!caseIdRegex.test(caseId)) {
+                messageDiv.textContent = 'Invalid Case ID. Please use format CA followed by 4 digits.';
+                messageDiv.className = 'error';
+                messageDiv.style.display = 'block';
+                return;
+            }
+
+            if (!documentFile) {
+                messageDiv.textContent = 'Please upload a document file.';
+                messageDiv.className = 'error';
+                messageDiv.style.display = 'block';
+                return;
+            }
+
+            const formData = new FormData();
+            // formData.append("document", documentFile);
+            formData.append("document_type", mapDocumentType(documentType));
+            formData.append("status", mapDocumentStatus(documentStatus));
+            formData.append("description", documentDescription);
+            formData.append("lawyer_id", lawyerId);
+
+            try {
+                const response = await fetch(`http://localhost:5000/cases/${caseId}/document`, {
+                    method: "POST",
+                    body: formData
+                });
+
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageDiv.textContent = `Document Uploaded Successfully for Case ${caseId}`;
+                    messageDiv.className = 'success';
+                } else {
+                    messageDiv.textContent = data.msg;
+                    messageDiv.className = 'error';
+                }
+            } catch (error) {
+                messageDiv.textContent = 'Error uploading document. Try again later.';
+                messageDiv.className = 'error';
+            }
+            messageDiv.style.display = 'block';
+        });
+
+        function mapDocumentType(frontendStatus) {
+            switch(frontendStatus) {
+                case "legal":
+                    return "Legal Document";
+                case "evidence":
+                    return "Evidence";
+                case "discovery":
+                    return "Discovery";
+                case "witness-statement":
+                    return "Witness Statement";
+                default:
+                    return frontendStatus;
+            }
+        }
+
+        function mapDocumentStatus(frontendStatus) {
+            switch(frontendStatus) {
+                case "draft":
+                    return "Draft";
+                case "final":
+                    return "Final";
+                case "revoked":
+                    return "Revoked";
+                default:
+                    return frontendStatus;
+            }
+        }
+        
+        async function fetchLawyerCases(lawyerId) {
+            try {
+                const response = await fetch(`http://localhost:5000/lawyer/${lawyerId}/cases`, {
+                    method: "GET"
+                });
+                if (!response.ok) {
+                    throw new Error("Failed to fetch cases");
+                }
+                const cases = await response.json();
+                displayCases(cases);
+            } catch (error) {
+                console.error("Error fetching cases:", error);
+            }
+        }
+
+        function displayCases(cases) {
+            const assignedCasesContainer = document.getElementById("assigned-cases");
+            assignedCasesContainer.innerHTML = "<h2>Assigned Cases</h2>"; // Clear existing content
+
+            if (cases.length === 0) {
+                assignedCasesContainer.innerHTML += "<p>No assigned cases.</p>";
+                return;
+            }
+
+            cases.forEach(caseItem => {
+                const caseBox = document.createElement("div");
+                caseBox.classList.add("case-box");
+                caseBox.innerHTML = `
+                    <h3>Case #${caseItem.case_id} - ${caseItem.case_type}</h3>
+                    <p><strong>Client:</strong> ${caseItem.Fname} ${caseItem.Lname}</p>
+                    <p><strong>Filed:</strong> ${new Date(caseItem.created_at).toLocaleDateString()}</p>
+                    `;
+                    assignedCasesContainer.appendChild(caseBox);
+            });
+        }
+
+        if (lawyerId) {
+            fetchLawyerCases(lawyerId);
+        } else {
+            console.error("Lawyer ID not found");
+        }
+
+        async function fetchCaseUpdates(lawyerId) {
+            try {
+                const response = await fetch(`http://localhost:5000/lawyers/${lawyerId}/updates`, {
+                    method: "GET"
+                });
+                if (!response.ok) {
+                    throw new Error("Failed to fetch case updates");
+                }
+
+                const updates = await response.json();
+                console.log("Case updates received:", updates); // Debugging log
+
+                const updatesContainer = document.querySelector("#home .profile-box");
+                updatesContainer.innerHTML = ""; // Clear previous content and set title
+
+                if (updates.length === 0) {
+                    updatesContainer.innerHTML += "<p>No recent updates available.</p>";
+                    return;
+                }
+
+                updates.forEach(update => {
+                    const updateItem = document.createElement("p");
+                    updateItem.innerHTML = `
+                        <strong>${new Date(update.update_date).toLocaleDateString()}, </strong>
+                        <strong>${update.case_id}: ${update.case_title} </strong><br>
+                        <strong>Lawyer: ${update.ClientFname} ${update.ClientLname} </strong><br>
+                        Description: ${update.task_description} <br><br>
+                    `;
+                    updatesContainer.appendChild(updateItem);
+                });
+
+            } catch (error) {
+                console.error("Error fetching updates:", error);
+            }
+        }
+        fetchCaseUpdates(lawyerId);
+
+        
+    </script>
+</body>
+</html>

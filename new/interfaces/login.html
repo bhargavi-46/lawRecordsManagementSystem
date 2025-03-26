@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Law Records Management System</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #f8f5ff;
+            color: #4B0082;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Decorative background elements */
+        body::before {
+            content: "§";
+            position: fixed;
+            top: 15%;
+            left: 10%;
+            font-size: 120px;
+            color: rgba(75, 0, 130, 0.05);
+            transform: rotate(-15deg);
+            z-index: -1;
+        }
+        
+        body::after {
+            content: "⚖";
+            position: fixed;
+            bottom: 15%;
+            right: 10%;
+            font-size: 120px;
+            color: rgba(75, 0, 130, 0.05);
+            transform: rotate(15deg);
+            z-index: -1;
+        }
+        
+        /* Header Styling */
+        header {
+            background: linear-gradient(135deg, #4B0082 0%, #8A2BE2 100%);
+            color: white;
+            padding: 20px 50px;
+            font-size: 28px;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(75, 0, 130, 0.3);
+            position: relative;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #E6E6FA, #D8BFD8, #E6E6FA);
+        }
+        
+        .login-container {
+            background: linear-gradient(145deg, #ffffff, #F3E5F5);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1),
+                        -10px -10px 30px rgba(255, 255, 255, 0.8);
+            width: 340px;
+            text-align: center;
+            margin: 80px 0;
+            position: relative;
+            border: 1px solid rgba(75, 0, 130, 0.1);
+            overflow: hidden;
+        }
+        
+        .login-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #4B0082, #8A2BE2);
+        }
+        
+        .login-container h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, #4B0082, #8A2BE2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .login-container h2::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #4B0082, #8A2BE2);
+            border-radius: 3px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
+            color: #4B0082;
+            transition: all 0.3s ease;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 15px;
+            border: 2px solid #D8BFD8;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #4B0082;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        input:focus {
+            border-color: #6A0DAD;
+            outline: none;
+            box-shadow: 0 0 8px rgba(106, 13, 173, 0.3), inset 2px 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-group::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #D8BFD8, transparent);
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, #4B0082, #8A2BE2);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 70%;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(106, 13, 173, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+        
+        .login-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(106, 13, 173, 0.4);
+        }
+        
+        .login-btn:hover::before {
+            left: 100%;
+        }
+        
+        .login-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(106, 13, 173, 0.3);
+        }
+        
+        .signup-box {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border: 2px solid #E6E6FA;
+            margin-top: 30px;
+            border-radius: 10px;
+            font-size: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .signup-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: #D8BFD8;
+        }
+        
+        .signup-box a {
+            color: #6A0DAD;
+            text-decoration: none;
+            font-weight: bold;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .signup-box a::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #6A0DAD;
+            transition: width 0.3s ease;
+        }
+        
+        .signup-box a:hover::after {
+            width: 100%;
+        }
+        
+        /* Decorative elements */
+        .form-icon {
+            position: absolute;
+            left: -25px;
+            top: 10px;
+            color: #8A2BE2;
+            font-size: 18px;
+            opacity: 0.7;
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .login-container {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        /* Form shimmer effect */
+        @keyframes shimmer {
+            0% { background-position: -100% 0; }
+            100% { background-position: 100% 0; }
+        }
+        
+        .form-shimmer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Law Records Management System
+    </header>
+    
+    <div class="login-container">
+        <div class="form-shimmer"></div>
+        <h2>Login</h2>
+        <form onsubmit="return validateLogin(event);">
+            <div class="form-group">
+                <span class="form-icon">👤</span>
+                <label for="username">Username</label>
+                <input type="text" id="username" required placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <span class="form-icon">🔒</span>
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Enter your password">
+            </div>
+            <p id="error-message" style="color: red; font-weight: bold; text-align: center;"></p>
+            <button type="submit" class="login-btn" onclick="validateLogin()">Login</button>
+        </form>
+        
+        <!-- Sign-Up Box -->
+        <div class="signup-box">
+            Don't have an account? <a href="signup.html">Sign Up</a>
+        </div>
+    </div>
+    
+    <script>
+        // Simple animation for input focus
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.querySelector('label').style.color = '#8A2BE2';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.querySelector('label').style.color = '#4B0082';
+            });
+        });
+
+async function validateLogin() {
+        event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+        
+            try {
+                const response = await fetch("http://localhost:5000/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (data.role === "Client") {
+                        window.location.href = "client_dashboard.html";
+                    } else if (data.role === "Lawyer") {
+                        window.location.href = "lawyer_dashboard.html";
+                    }
+                    localStorage.setItem("user_id", data.user_id);
+                    errorMessage.textContent = "";
+                } else {
+                    errorMessage.textContent = data.error || "Login failed. Please try again.";
+                }
+            } catch (error) {
+                errorMessage.textContent = "Server error. Please try again later.";
+            }
+        }
+
+    </script>
+</body>
+</html>
+
+<!-- 
+<script>
+    async function validateLogin() {
+        event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+        
+            try {
+                const response = await fetch("http://localhost:3000/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (data.role === "Client") {
+                        window.location.href = "dashboard_client.html";
+                    } else if (data.role === "Lawyer") {
+                        window.location.href = "dashboard_lawyer.html";
+                    }
+                } else {
+                    errorMessage.textContent = data.error || "Login failed. Please try again.";
+                }
+            } catch (error) {
+                errorMessage.textContent = "Server error. Please try again later.";
+            }
+        }
+</script> -->

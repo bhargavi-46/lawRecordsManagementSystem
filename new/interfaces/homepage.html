@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Law Records Management System</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #f8f5ff;
+            color: #4B0082;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        /* Header Styling */
+        header {
+            background: linear-gradient(135deg, #4B0082 0%, #8A2BE2 100%);
+            color: white;
+            padding: 25px 50px;
+            font-size: 36px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(75, 0, 130, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "⚖";
+            position: absolute;
+            font-size: 120px;
+            opacity: 0.1;
+            right: 30px;
+            top: -20px;
+        }
+        
+        /* Login & Sign-up Buttons */
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            z-index: 1;
+        }
+        .auth-buttons a {
+            text-decoration: none;
+            color: white;
+            background-color: #6A0DAD;
+            padding: 12px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        .auth-buttons a:hover {
+            background-color: #8A2BE2;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Info Section */
+        .info-section {
+            background: linear-gradient(to bottom, #E6E6FA, #F3E5F5);
+            padding: 50px;
+            margin: 60px auto;
+            width: 80%;
+            font-size: 20px;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0px 10px 25px rgba(75, 0, 130, 0.15);
+            position: relative;
+            border: 1px solid rgba(75, 0, 130, 0.1);
+        }
+        
+        .info-section::before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: #4B0082;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        
+        .info-section::after {
+            content: "§";
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 24px;
+            z-index: 2;
+        }
+        
+        .info-section h2 {
+            font-size: 32px;
+            background: linear-gradient(90deg, #4B0082, #8A2BE2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 25px;
+        }
+        
+        .info-section ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 25px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .info-section li {
+            font-size: 18px;
+            margin: 8px 0;
+            font-weight: normal;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            border-left: 4px solid #6A0DAD;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .info-section li:hover {
+            transform: translateX(5px);
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Our Lawyers Section */
+        .lawyers-section {
+            text-align: center;
+            margin: 70px auto;
+            width: 85%;
+            position: relative;
+        }
+        
+        .lawyers-section h2 {
+            font-size: 32px;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .lawyers-section h2::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 3px;
+            width: 80px;
+            background: linear-gradient(90deg, #4B0082, #8A2BE2);
+            border-radius: 3px;
+        }
+        
+        .lawyers-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 35px;
+            justify-content: center;
+            padding: 30px;
+        }
+        
+        .lawyer-card {
+            background: linear-gradient(145deg, #ffffff, #F3E5F5);
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1),
+                        -5px -5px 15px rgba(255, 255, 255, 0.5);
+            transition: all 0.4s ease-in-out;
+            border: 1px solid rgba(75, 0, 130, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .lawyer-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #4B0082, #8A2BE2);
+        }
+        
+        .lawyer-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 8px 8px 25px rgba(0, 0, 0, 0.15),
+                        -8px -8px 25px rgba(255, 255, 255, 0.8);
+        }
+        
+        .lawyer-card img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .lawyer-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .lawyer-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+            color: #4B0082;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .lawyer-name::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 2px;
+            background-color: #6A0DAD;
+        }
+        
+        .lawyer-achievement {
+            font-size: 15px;
+            color: #4B0082;
+            margin-top: 12px;
+            font-style: italic;
+            line-height: 1.5;
+            padding: 0 10px;
+        }
+        
+        /* Footer Styling */
+        footer {
+            background: linear-gradient(135deg, #4B0082 0%, #8A2BE2 100%);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: auto;
+            position: relative;
+        }
+        
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #E6E6FA, #D8BFD8, #E6E6FA);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .footer-links a::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+        
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Additional decorative elements */
+        .decorative-gavel {
+            position: fixed;
+            top: 20%;
+            right: 5%;
+            font-size: 60px;
+            opacity: 0.05;
+            color: #4B0082;
+            transform: rotate(15deg);
+            z-index: -1;
+        }
+        
+        .decorative-paragraph {
+            position: fixed;
+            bottom: 15%;
+            left: 5%;
+            font-size: 70px;
+            opacity: 0.05;
+            color: #4B0082;
+            transform: rotate(-15deg);
+            z-index: -1;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .info-section, .lawyers-section {
+            animation: fadeIn 1s ease-out;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Decorative elements in background -->
+    <div class="decorative-gavel">⚖</div>
+    <div class="decorative-paragraph">§</div>
+
+    <header>
+        Law Records Management System
+        <div class="auth-buttons">
+            <a href="login.html">Login</a>
+            <a href="signup.html">Sign Up</a>
+        </div>
+    </header>
+
+    <!-- Info Section (Merged with More Info) -->
+    <section class="info-section">
+        <h2>Welcome to the Law Records Management System</h2>
+        <p>
+            A powerful platform for managing legal records with efficiency and security.  
+            Our system helps law firms and legal professionals maintain organized records,  
+            manage cases effectively, and ensure top-tier data security.
+        </p>
+        <ul>
+            <li>📂 Securely store and manage legal documents.</li>
+            <li>🔍 Easily search and retrieve case files.</li>
+            <li>📜 Keep track of court dates, case statuses, and client details.</li>
+            <li>⚖ Enhance collaboration among legal professionals.</li>
+        </ul>
+        <p>Join us today and streamline your legal operations with our cutting-edge record management system.</p>
+    </section>
+
+    <!-- Our Lawyers Section -->
+    <section class="lawyers-section">
+        <h2>Our Lawyers</h2>
+        <div class="lawyers-container" id="lawyers-list"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Law Records Management System. All Rights Reserved.</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+        </div>
+    </footer>
+
+    <script>
+        const lawyers = [
+            { name: "Rajesh Mehta", achievement: "Won 95% of criminal defense cases." },
+            { name: "Priya Sharma", achievement: "Led major corporate legal reforms." },
+            { name: "Neha Singh", achievement: "Defended international human rights cases." },
+            { name: "Shreya Saxena", achievement: "Won complex intellectual property disputes." },
+            { name: "Deepak Iyer", achievement: "Specialized in environmental law and policy." },
+            { name: "Gopal Verma", achievement: "Known for high-profile constitutional law cases." }
+        ];
+
+        function displayLawyers() {
+            const container = document.getElementById("lawyers-list");
+            container.innerHTML = "";
+
+            lawyers.forEach(lawyer => {
+                const card = document.createElement("div");
+                card.className = "lawyer-card";
+
+                const img = document.createElement("img");
+                img.src = "/api/placeholder/110/110"; // Using placeholder image
+
+                const name = document.createElement("div");
+                name.className = "lawyer-name";
+                name.innerText = lawyer.name;
+
+                const achievement = document.createElement("div");
+                achievement.className = "lawyer-achievement";
+                achievement.innerText = lawyer.achievement;
+
+                card.appendChild(img);
+                card.appendChild(name);
+                card.appendChild(achievement);
+                container.appendChild(card);
+            });
+        }
+
+        // Add animation when scrolling
+        window.addEventListener('load', function() {
+            displayLawyers();
+            
+            // Simple animation for the cards
+            const cards = document.querySelectorAll('.lawyer-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = "0";
+                card.style.transform = "translateY(20px)";
+                
+                setTimeout(() => {
+                    card.style.transition = "all 0.5s ease";
+                    card.style.opacity = "1";
+                    card.style.transform = "translateY(0)";
+                }, 100 * (index + 1));
+            });
+        });
+    </script>
+
+</body>
+</html>
